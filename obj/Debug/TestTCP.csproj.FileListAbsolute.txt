@@ -1,0 +1,6 @@
+c:\users\fandonglin.zaonline\documents\visual studio 2015\Projects\TestTCP\TestTCP\bin\Debug\TestTCP.exe.config
+c:\users\fandonglin.zaonline\documents\visual studio 2015\Projects\TestTCP\TestTCP\bin\Debug\TestTCP.exe
+c:\users\fandonglin.zaonline\documents\visual studio 2015\Projects\TestTCP\TestTCP\bin\Debug\TestTCP.pdb
+c:\users\fandonglin.zaonline\documents\visual studio 2015\Projects\TestTCP\TestTCP\obj\Debug\TestTCP.csprojResolveAssemblyReference.cache
+c:\users\fandonglin.zaonline\documents\visual studio 2015\Projects\TestTCP\TestTCP\obj\Debug\TestTCP.exe
+c:\users\fandonglin.zaonline\documents\visual studio 2015\Projects\TestTCP\TestTCP\obj\Debug\TestTCP.pdb
