@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using TestTCP.management;
 
 namespace TestTCP
 {
@@ -11,8 +12,10 @@ namespace TestTCP
     {
         Socket myClientSocket;
         byte[] result = new byte[1024];
-        public MsgReceiverEngine(Socket clientSocket)
+        TCPConnectorInstance tcpInstance;
+        public MsgReceiverEngine(TCPConnectorInstance instance)
         {
+            tcpInstance = instance;
             myClientSocket = clientSocket;
         }
 
