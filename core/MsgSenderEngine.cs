@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TestTCP
 {
-    class MsgSenderEngine
+    public class MsgSenderEngine
     {
         Socket myClientSocket;
         byte[] result = new byte[1024];
