@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestTCP.utility
+namespace TestTCP.core
 {
-    /***
-    * 模拟器相关操作
+    /**
+    * 消息处理器
     */
-    public interface EMulator
+    public interface MsgHandler
     {
-        
+        bool handler(Message msg);
     }
 }

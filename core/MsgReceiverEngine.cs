@@ -8,14 +8,12 @@ using TestTCP.management;
 
 namespace TestTCP
 {
-    class MsgReceiverEngine
+    public class MsgReceiverEngine
     {
         Socket myClientSocket;
         byte[] result = new byte[1024];
-        TCPConnectorInstance tcpInstance;
-        public MsgReceiverEngine(TCPConnectorInstance instance)
+        public MsgReceiverEngine(Socket clientSocket)
         {
-            tcpInstance = instance;
             myClientSocket = clientSocket;
         }
 

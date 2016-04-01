@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using log4net;
+using TestTCP.log;
 
 namespace TestTCP
 {
@@ -16,16 +18,19 @@ namespace TestTCP
         static Socket serverSocket;
         static void Main(string[] args)
         {
+            log4net.ILog log = LogHelper.GetLog();
+
+            log.Info("hello");
             //服务器IP地址  
-            IPAddress ip = IPAddress.Parse("127.0.0.1");
-            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
-            serverSocket.Listen(10);    //设定最多10个排队连接请求  
-            Console.WriteLine("启动监听{0}成功", serverSocket.LocalEndPoint.ToString());
-            //通过Clientsoket发送数据  
-            Thread myThread = new Thread(ListenClientConnect);
-            myThread.Start();
-            Console.ReadLine();
+            //IPAddress ip = IPAddress.Parse("127.0.0.1");
+            //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
+            //serverSocket.Listen(10);    //设定最多10个排队连接请求  
+            //Console.WriteLine("启动监听{0}成功", serverSocket.LocalEndPoint.ToString());
+            ////通过Clientsoket发送数据  
+            //Thread myThread = new Thread(ListenClientConnect);
+            //myThread.Start();
+            //Console.ReadLine();
         }
         /// <summary>  
         /// 监听客户端连接  
