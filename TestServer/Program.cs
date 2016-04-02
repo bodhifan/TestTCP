@@ -26,16 +26,16 @@ namespace TestServer
             log4net.Config.XmlConfigurator.ConfigureAndWatch(
  new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "Log4Net.config"));
             // 服务器IP地址
-            //IPAddress ip = IPAddress.Parse("127.0.0.1");
-            //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
-            //serverSocket.Listen(10);    //设定最多10个排队连接请求  
-            //Console.WriteLine("启动监听{0}成功", serverSocket.LocalEndPoint.ToString());
-            ////通过Clientsoket发送数据  
-            //Thread myThread = new Thread(ListenClientConnect);
-            //myThread.Start();
+            IPAddress ip = IPAddress.Parse("127.0.0.1");
+            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
+            serverSocket.Listen(10);    //设定最多10个排队连接请求  
+            Console.WriteLine("启动监听{0}成功", serverSocket.LocalEndPoint.ToString());
+            //通过Clientsoket发送数据  
+            Thread myThread = new Thread(ListenClientConnect);
+            myThread.Start();
 
-            AdbUtility.GetAllDevices();
+            //  AdbUtility.GetAllDevices();
             Console.ReadLine();
         }
         /// <summary>  
@@ -49,7 +49,19 @@ namespace TestServer
                 ConnectContext ctx = new ConnectContext(clientSocket);
 
                 MsgDispatchCenter dispatchCenter = new MsgDispatchCenter(ctx);
+                dispatchCenter.OnMsgReceived += DispatchCenter_OnMsgReceived;
+                dispatchCenter.DispatchMsg();
             }
+        }
+
+        private static bool DispatchCenter_OnMsgReceived(ConnectContext ctx, Message msg)
+        {
+           // log.Info("开始处理1111 " + msg.msg);
+
+            // 写入应答消息
+            ctx.writtingQueue.Push(new Message(msg.msgType + 1, "this is repsonse for:" + msg));
+
+            return true;
         }
     }
 }

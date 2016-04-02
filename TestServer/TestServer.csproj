@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\Downloads\log4net-1.2.15-bin-newkey\log4net-1.2.15\bin\net\4.5\release\log4net.dll</HintPath>
+      <HintPath>..\library\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

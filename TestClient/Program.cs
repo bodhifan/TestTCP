@@ -25,11 +25,11 @@ namespace TestServer
             log4net.Config.XmlConfigurator.ConfigureAndWatch(
  new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "Log4Net.config"));
             // 服务器IP地址
-            IPAddress ip = IPAddress.Parse("127.0.0.1");
-            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            serverSocket.Connect(ip, myProt);
+            //IPAddress ip = IPAddress.Parse("127.0.0.1");
+            //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //serverSocket.Connect(ip, myProt);
 
-            ConnectContext ctx = new ConnectContext(serverSocket);
+            ConnectContext ctx = new ConnectContext("127.0.0.1",myProt);
 
             for (int i = 0; i < 10; i++)
             {

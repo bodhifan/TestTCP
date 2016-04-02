@@ -20,30 +20,23 @@ namespace Common.Management
         private MessageQueue<Message> receiveMsgQueue;
         private ConnectContext context;
 
-        Dictionary<string,MsgHandler> handlerMap = new Dictionary<string,MsgHandler>();
+        public event MsgHandler OnMsgReceived;
 
         // 消息分发线程
         Thread dispatchThread;
-
         public MsgDispatchCenter(ConnectContext context)
         {
             this.context = context;
             this.receiveMsgQueue = context.receivedQueue;
+        }
 
-            // 注册默认的消息处理器
-            RegisterHandler("default", new DefaultHandler());
 
-            // 启动分发线程
+        // 启动分发线程
+        public void DispatchMsg()
+        {
             dispatchThread = new Thread(run);
             dispatchThread.Start();
-            
         }
-
-        public void RegisterHandler(string name, MsgHandler handler)
-        {
-            handlerMap.Add(name, handler);
-        }
-
 
         private void run()
         {
@@ -52,19 +45,24 @@ namespace Common.Management
                 Message msg = receiveMsgQueue.Fetch();
                 string msgType = msg.msgType.ToString();
                 
-                MsgHandler handler = null;
-                log.Debug("查找处理器:" + msgType);
-                if (handlerMap.ContainsKey(msgType))
+                if(null != OnMsgReceived)
                 {
-                    handler = handlerMap[msgType];
+                    log.Debug("触发消息处理事件:" + msgType);
+                    OnMsgReceived(context, msg);
                 }
+                //MsgHandler handler = null;
+                //log.Debug("查找处理器:" + msgType);
+                //if (handlerMap.ContainsKey(msgType))
+                //{
+                //    handler = handlerMap[msgType];
+                //}
 
-                if (handler == null)
-                {
-                    log.Debug("没找到对应的处理器，使用默认的处理器");
-                    handler = handlerMap["default"];
-                }
-                handler.handler(context, msg);
+                //if (handler == null)
+                //{
+                //    log.Debug("没找到对应的处理器，使用默认的处理器");
+                //    handler = handlerMap["default"];
+                //}
+                //handler.handler(context, msg);
             }
         }
     }

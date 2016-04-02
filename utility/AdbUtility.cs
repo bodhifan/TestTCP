@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.Utility;
 namespace Common.Utility
 {
     /**
@@ -11,9 +11,6 @@ namespace Common.Utility
     */
     public class AdbUtility
     {
-        static string DIR_PATH = @"C:\Program Files\Microvirt\MEmu";
-        static string ADB_PATH = string.Format("\"{0}\\adb.exe\"", DIR_PATH);
-        static string CMD_PATH = "cmd.exe";
         /// <summary>
         /// 获取所有的安卓模拟器
         /// </summary>
@@ -22,14 +19,17 @@ namespace Common.Utility
         {
             List<string> allActiveIps = new List<string>();
             string mulatorExecuName = "tasklist | findstr \"MEmuHeadless.exe\"";
-            string allMEmuHeadless =  ProcessUtility.ExecAndWait(CMD_PATH, mulatorExecuName);
+            string allMEmuHeadless =  ProcessUtility.ExecAndWait(Constants.CMD_PATH, mulatorExecuName);
 
             // 逍遥模拟器IP地址模拟
             string[] defaultIPs = new string[] { "127.0.0.1:21503","127.0.0.1:21513","127.0.0.1:21523","127.0.0.1:21533"};
             Connect2Devices(defaultIPs);
 
-            string allDevicesStr = string.Format("{0} devices",ADB_PATH);
-            allDevicesStr = ProcessUtility.ExecAndWait(CMD_PATH, allDevicesStr);
+            /**
+            * 解析命令返回文本，获取激活的模拟器IP地址
+            */
+            string allDevicesStr = string.Format("{0} devices", Constants.ADB_PATH);
+            allDevicesStr = ProcessUtility.ExecAndWait(Constants.CMD_PATH, allDevicesStr);
             string[] lines = allDevicesStr.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             foreach (string line in lines)
             {
@@ -48,7 +48,18 @@ namespace Common.Utility
         }
 
         /// <summary>
-        /// 连接到模拟器
+        /// 端口数据转发：
+        /// PC上所有localPort端口通信数据将被重定向到手机端remotePort端口server上
+        /// </summary>
+        /// <param name="localPort"></param>
+        /// <param name="remotePort"></param>
+        public static void ForwardConnect(int localPort, int remotePort)
+        {
+            ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} forward tcp:{1} tcp:{2}", Constants.ADB_PATH, localPort, remotePort));
+        }
+
+
+        /// <summary>        /// 连接到模拟器
         /// </summary>
         /// <param name="defaultIPs"></param>
         private static void Connect2Devices(string[] defaultIPs)
@@ -56,8 +67,8 @@ namespace Common.Utility
             string cmmStr = "{0} connect {1}";
             foreach (string ip in defaultIPs)
             {
-                string cmm = string.Format(cmmStr, ADB_PATH, ip);
-                ProcessUtility.ExecAndWait(CMD_PATH, cmm);
+                string cmm = string.Format(cmmStr, Constants.ADB_PATH, ip);
+                ProcessUtility.ExecAndWait(Constants.CMD_PATH, cmm);
             }
         }
 

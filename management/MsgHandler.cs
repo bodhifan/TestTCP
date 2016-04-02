@@ -8,18 +8,11 @@ using log4net;
 
 namespace Common.Management
 {
-    /**
-    * 消息处理器
-    */
-    public interface MsgHandler
-    {
-        bool handler(ConnectContext ctx,Message msg);
-    }
 
     /************************************************************************/
     /* 默认的消息处理器                                                     */
     /************************************************************************/
-    public class DefaultHandler : MsgHandler
+    public class DefaultHandler
     {
         ILog log = LogManager.GetLogger(typeof(DefaultHandler));
         public bool handler(ConnectContext ctx, Message msg)

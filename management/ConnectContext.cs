@@ -39,12 +39,13 @@ namespace Common.Management
         public MessageQueue<Message> receivedQueue; //保存接受mulator的消息
         public MessageQueue<Message> writtingQueue; //等待发送的消息
 
+        // 当前socket
         Socket socket;
 
-        string ipAddr; // IP地址
-        int port;   // 端口号
+        string ipAddr;    // IP地址
+        int port;         // 端口号
 
-        bool isCnnSuc; // 是否连接成功
+        bool isCnnSuc;
 
         // 为服务器提供服务
         public ConnectContext(Socket socket):this("default",socket) 
