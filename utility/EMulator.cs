@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestTCP.utility
+namespace Common.utility
 {
     /***
     * 模拟器相关操作

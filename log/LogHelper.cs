@@ -5,23 +5,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestTCP.log
+namespace Common.log
 {
     public class LogHelper
     {
-        private static LogHelper logHelper = null;
         private static ILog DEFAULT = LogManager.GetLogger("DEFAULT");
-        public static LogHelper Instance()
+
+        public static void Info(string msg)
         {
-            if(null == logHelper)
-            {
-                logHelper = new LogHelper();
-            }
-            return logHelper;
+            DEFAULT.Info(msg);
         }
-        public static ILog GetLog()
+        public static void Error(string msg)
         {
-            return DEFAULT;
+            DEFAULT.Error(msg);
+        }
+
+        public static void Warn(string msg)
+        {
+            DEFAULT.Warn(msg);
+        }
+
+        public static void Debug(string msg)
+        {
+            DEFAULT.Debug(msg);
         }
     }
 }

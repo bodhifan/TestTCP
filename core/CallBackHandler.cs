@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestTCP.core
+namespace Common.Core
 {
     /***
     *  定义一系列的委托集合

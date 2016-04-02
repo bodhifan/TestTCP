@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestTCP.core
+namespace Common.management
 {
-    /**
-    * 消息处理器
-    */
-    public interface MsgHandler
+    class Mananger
     {
-        bool handler(Message msg);
     }
 }
