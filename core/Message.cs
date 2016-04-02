@@ -40,8 +40,17 @@ namespace Common.Core
             this.msgType = type;
             this.msg = msg;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}{1}", msgType, msg);
+        }
+        
     }
 
+    /************************************************************************/
+    /* 用于解析Json                                                         */
+    /************************************************************************/
     [DataContract]
     public class MessageJson
     {

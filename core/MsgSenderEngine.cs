@@ -43,7 +43,7 @@ namespace Common.Core
                 {
                     string msgstr = Support.Message2String(msg);
                     msgstr = string.Format("length:{0:00000}{1}", msgstr.Length,msgstr);
-                    log.Info("发送消息：" + msgstr);
+                    log.Debug("发送消息：" + msgstr);
                     result = Encoding.UTF8.GetBytes(msgstr);
                     
                     myClientSocket.Send(result);

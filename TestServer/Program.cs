@@ -10,6 +10,7 @@ using log4net;
 using Common.log;
 using Common.Core;
 using Common.Management;
+using Common.Utility;
 
 namespace TestServer
 {
@@ -24,15 +25,17 @@ namespace TestServer
 
             log4net.Config.XmlConfigurator.ConfigureAndWatch(
  new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "Log4Net.config"));
-           // 服务器IP地址
-            IPAddress ip = IPAddress.Parse("127.0.0.1");
-            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
-            serverSocket.Listen(10);    //设定最多10个排队连接请求  
-            Console.WriteLine("启动监听{0}成功", serverSocket.LocalEndPoint.ToString());
-            //通过Clientsoket发送数据  
-            Thread myThread = new Thread(ListenClientConnect);
-            myThread.Start();
+            // 服务器IP地址
+            //IPAddress ip = IPAddress.Parse("127.0.0.1");
+            //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //serverSocket.Bind(new IPEndPoint(ip, myProt));  //绑定IP地址：端口  
+            //serverSocket.Listen(10);    //设定最多10个排队连接请求  
+            //Console.WriteLine("启动监听{0}成功", serverSocket.LocalEndPoint.ToString());
+            ////通过Clientsoket发送数据  
+            //Thread myThread = new Thread(ListenClientConnect);
+            //myThread.Start();
+
+            AdbUtility.GetAllDevices();
             Console.ReadLine();
         }
         /// <summary>  

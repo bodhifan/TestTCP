@@ -24,7 +24,7 @@ namespace Common.Management
         ILog log = LogManager.GetLogger(typeof(DefaultHandler));
         public bool handler(ConnectContext ctx, Message msg)
         {
-            log.Info(msg.msg);
+            log.Info("开始处理 "+msg.msg);
 
             // 写入应答消息
             ctx.writtingQueue.Push(new Message(msg.msgType + 1, "this is repsonse for:" + msg));
