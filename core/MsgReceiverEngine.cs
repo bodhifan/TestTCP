@@ -38,7 +38,6 @@ namespace Common.Core
         private void run()
         {
             StringBuilder sb = new StringBuilder();
-
             while (true)
             {
                 try

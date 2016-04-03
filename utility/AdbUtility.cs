@@ -59,10 +59,11 @@ namespace Common.Utility
         }
 
 
-        /// <summary>        /// 连接到模拟器
+        /// <summary>        
+        /// 连接到模拟器
         /// </summary>
         /// <param name="defaultIPs"></param>
-        private static void Connect2Devices(string[] defaultIPs)
+        public static void Connect2Devices(string[] defaultIPs)
         {
             string cmmStr = "{0} connect {1}";
             foreach (string ip in defaultIPs)
