@@ -20,7 +20,7 @@ namespace Common.Management
             log.Info("开始处理 "+msg.msg);
 
             // 写入应答消息
-            ctx.writtingQueue.Push(new Message(msg.msgType + 1, "this is repsonse for:" + msg));
+            ctx.writtingQueue.Push(new Message(msg.msgType + 1, "this is repsonse for:" + msg).ToString());
 
             return true;
         }

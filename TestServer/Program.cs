@@ -54,12 +54,12 @@ namespace TestServer
             }
         }
 
-        private static bool DispatchCenter_OnMsgReceived(ConnectContext ctx, Message msg)
+        private static bool DispatchCenter_OnMsgReceived(ConnectContext ctx, string msg)
         {
            // log.Info("开始处理1111 " + msg.msg);
 
             // 写入应答消息
-            ctx.writtingQueue.Push(new Message(msg.msgType + 1, "this is repsonse for:" + msg));
+            ctx.writtingQueue.Push("this is response for" + msg);
 
             return true;
         }

@@ -17,11 +17,11 @@ namespace Common.Core
         Socket myClientSocket;
         byte[] result = new byte[1024];
 
-        MessageQueue<Message> writtingQueue;
+        MessageQueue<string> writtingQueue;
 
         Thread engine;
 
-        public MsgSenderEngine(Socket clientSocket, MessageQueue<Message> queue)
+        public MsgSenderEngine(Socket clientSocket, MessageQueue<string> queue)
         {
             myClientSocket = clientSocket;
             myClientSocket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
@@ -38,11 +38,10 @@ namespace Common.Core
         {
             while (true)
             {
-                Message msg = writtingQueue.Fetch();
+                string msg = writtingQueue.Fetch();
                 try
                 {
-                    string msgstr = Support.Message2String(msg);
-                    msgstr = string.Format("length:{0:00000}{1}", msgstr.Length,msgstr);
+                    string msgstr = string.Format("length:{0:00000}{1}", msg.Length, msg);
                     log.Debug("发送消息：" + msgstr);
                     result = Encoding.UTF8.GetBytes(msgstr);
                     

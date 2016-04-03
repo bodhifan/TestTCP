@@ -17,7 +17,7 @@ namespace Common.Management
 
         ILog log = LogManager.GetLogger(typeof(MsgDispatchCenter));
         // 用于接受消息的消息队列
-        private MessageQueue<Message> receiveMsgQueue;
+        private MessageQueue<string> receiveMsgQueue;
         private ConnectContext context;
 
         public event MsgHandler OnMsgReceived;
@@ -42,12 +42,11 @@ namespace Common.Management
         {
             while (true)
             {
-                Message msg = receiveMsgQueue.Fetch();
-                string msgType = msg.msgType.ToString();
-                
+                string msg = receiveMsgQueue.Fetch();
+               
                 if(null != OnMsgReceived)
                 {
-                    log.Debug("触发消息处理事件:" + msgType);
+                    log.Debug("触发消息处理事件" );
                     OnMsgReceived(context, msg);
                 }
                 //MsgHandler handler = null;

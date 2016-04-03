@@ -36,8 +36,8 @@ namespace Common.Management
          */
         public MsgSenderEngine msgSender;
 
-        public MessageQueue<Message> receivedQueue; //保存接受mulator的消息
-        public MessageQueue<Message> writtingQueue; //等待发送的消息
+        public MessageQueue<string> receivedQueue; //保存接受mulator的消息
+        public MessageQueue<string> writtingQueue; //等待发送的消息
 
         // 当前socket
         Socket socket;
@@ -99,12 +99,12 @@ namespace Common.Management
             }
 
             log.Info("启动接收引擎");
-            receivedQueue = new MessageQueue<Message>();
+            receivedQueue = new MessageQueue<string>();
             msgRcv = new MsgReceiverEngine(socket, receivedQueue);
             msgRcv.Start();
 
             log.Info("启动发送引擎");
-            writtingQueue = new MessageQueue<Message>();
+            writtingQueue = new MessageQueue<string>();
             msgSender = new MsgSenderEngine(socket, writtingQueue);
             msgSender.Start();
 

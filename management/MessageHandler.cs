@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Common.Management
 {
     //用于消息处理的委托
-    public delegate bool MsgHandler(ConnectContext ctx, Message msg);
+    public delegate bool MsgHandler(ConnectContext ctx, string msg);
 
     
 }

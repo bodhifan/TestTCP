@@ -40,8 +40,7 @@ namespace Common.Mulator
         /// <summary>
         /// 服务器是否已经启动
         /// </summary>
-        private bool IsServerSetuped;
-
+        public bool IsServerSetuped { set; get; }
 
         /// <summary>
         /// 启动安卓服务器
@@ -136,8 +135,8 @@ namespace Common.Mulator
         /// <param name="e"></param>
         private void ProcessExitHanlder(object sender, EventArgs e)
         {
-            log.Info("进程退出" + mulatorProcess.ProcessName);
-            //IsServerSetuped = false;
+            log.Info("模拟器进程退出");
+            IsServerSetuped = false;
         }
     }
 }

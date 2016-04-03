@@ -16,13 +16,13 @@ namespace Common.Core
         Socket myClientSocket;
         byte[] result = new byte[1024];
 
-        MessageQueue<Message> receivedQueue;
+        MessageQueue<string> receivedQueue;
 
         /**
          * 用于拉取消息的线程
          */
         Thread engine;
-        public MsgReceiverEngine(Socket clientSocket,MessageQueue<Message> queue)
+        public MsgReceiverEngine(Socket clientSocket,MessageQueue<string> queue)
         {
             myClientSocket = clientSocket;
             receivedQueue = queue;
@@ -44,6 +44,8 @@ namespace Common.Core
                 {
                     //通过clientSocket接收数据  
                     int receiveNumber = myClientSocket.Receive(result);
+                    if (receiveNumber == 0)
+                        continue;
                     string msg = Encoding.UTF8.GetString(result, 0, receiveNumber);
                     sb.Append(msg);
                     log.Debug("接收到字符串 " + msg);
@@ -64,9 +66,8 @@ namespace Common.Core
 
                         // 获取真正的报文
                         onsMsg = currentStr.Substring(0, length);
-                        Message message = Support.String2Message(onsMsg);
-                        log.Info(string.Format("接收{0}消息{1}", myClientSocket.RemoteEndPoint.ToString(), message));
-                        receivedQueue.Push(message);
+                        log.Info(string.Format("接收{0}消息{1}", myClientSocket.RemoteEndPoint.ToString(), onsMsg));
+                        receivedQueue.Push(onsMsg);
                         currentStr = currentStr.Remove(0, length);
                     }
 
