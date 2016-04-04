@@ -46,12 +46,6 @@ namespace TestServer
 
             //ConnectContext ctx = new ConnectContext("127.0.0.1", myProt);
 
-            for (int i = 0; i < 10; i++)
-            {
-                mulator.cxt.writtingQueue.Push("hello" + i);
-            }
-
-
 
             /***
              *  编码方式测试
