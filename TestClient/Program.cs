@@ -19,8 +19,8 @@ namespace TestServer
     class Program
     {
         private static byte[] result = new byte[1024];
-        private static int myProt = 8885;   //端口  
-      //  private static int myProt = 42223;   //端口  
+       // private static int myProt = 8885;   //端口  
+        private static int myProt = 42223;   //端口  
         static Socket serverSocket;
 
         static void Main(string[] args)
@@ -28,30 +28,42 @@ namespace TestServer
 
             log4net.Config.XmlConfigurator.ConfigureAndWatch(
  new System.IO.FileInfo(AppDomain.CurrentDomain.BaseDirectory + "Log4Net.config"));
-            // 服务器IP地址
-            //IPAddress ip = IPAddress.Parse("127.0.0.1");
-            //serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //serverSocket.Connect(ip, myProt);
-            //string localIPAddr = "127.0.0.1:21503";
-            //string logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {3} push {1} {2}", "adb", Constants.JAR_PATH, Constants.TEMP_PATH, "127.0.0.1:21503"));
+
+            /**
+             * 启动一次完整的模拟器测试
+             */
+            MulatorManager manager = new MulatorManager();
+            Mulator mulator = manager.Setup("MEmu");
+            mulator.OnMsgReceived += Mulator_OnMsgReceived;
+            mulator.StartServer();
+            Console.WriteLine("helo");
+
+
+
+
             //logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {2} shell uiautomator runtest {1} -c com.test.TestRegister", Constants.ADB_PATH, Constants.JAR_FILE, localIPAddr));
 
-            //MulatorManager manager = new MulatorManager();
-            //Mulator mulator = manager.Setup("MEmu");
-            //mulator.OnMsgReceived += Mulator_OnMsgReceived;
-            //mulator.StartServer();
-            //Console.WriteLine("helo");
 
-
-            //    logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {2} shell uiautomator runtest {1} -c com.test.TestRegister", Constants.ADB_PATH, Constants.JAR_FILE, localIPAddr));
-
-
-            ConnectContext ctx = new ConnectContext("127.0.0.1", myProt);
+            //ConnectContext ctx = new ConnectContext("127.0.0.1", myProt);
 
             for (int i = 0; i < 10; i++)
             {
-                ctx.writtingQueue.Push("hello" + i);
+                mulator.cxt.writtingQueue.Push("hello" + i);
             }
+
+
+
+            /***
+             *  编码方式测试
+             */
+            //// 编译utf-8
+            //  string msg = "[length:00016======鎴戞槸瀹㈡湇绔?====]";
+            //  msg = "鎴戞帴鏀跺埌瀹㈡埛绔紶鏉ョ殑娑堟伅锛?=====鎴戞槸瀹㈡湇绔?====";
+            ////  byte[] utf = Encoding.Convert(Encoding.GetEncoding("GBK"), Encoding.UTF8, Encoding.GetEncoding("GBK").GetBytes(msg));
+            //  byte[] gbk = Encoding.GetEncoding(936).GetBytes(msg);
+            //  msg = Encoding.UTF8.GetString(gbk);
+
+            //  Console.WriteLine(msg);
 
             Console.ReadLine();
         }

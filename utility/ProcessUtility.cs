@@ -112,7 +112,7 @@ namespace Common.Utility
         /// <param name="errorMsgHandler"></param>
         /// <param name="exitHandler"></param>
         /// <returns></returns>
-        public static Process Exec(string exePath, string cmdLines,DataReceivedEventHandler receviedMsgHandler, DataReceivedEventHandler errorMsgHandler,EventHandler exitHandler)
+        public static Process Exec(string exePath, string[] cmdLines,DataReceivedEventHandler receviedMsgHandler, DataReceivedEventHandler errorMsgHandler,EventHandler exitHandler)
         {
             Process process = new System.Diagnostics.Process();
             process.StartInfo.FileName = exePath;
@@ -122,8 +122,12 @@ namespace Common.Utility
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.RedirectStandardError = true;
             process.Start();
-            process.StandardInput.WriteLine(cmdLines + "&exit");
             process.BeginOutputReadLine();
+            foreach (string cmdline in cmdLines)
+            {
+                process.StandardInput.WriteLine(cmdline);
+            }
+
             process.EnableRaisingEvents = true;
 
             if (receviedMsgHandler != null)

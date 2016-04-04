@@ -46,6 +46,7 @@ namespace Common.Core
                     int receiveNumber = myClientSocket.Receive(result);
                     if (receiveNumber == 0)
                         continue;
+
                     string msg = Encoding.UTF8.GetString(result, 0, receiveNumber);
                     sb.Append(msg);
                     log.Debug("接收到字符串 " + msg);

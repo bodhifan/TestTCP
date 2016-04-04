@@ -19,6 +19,9 @@ namespace Common.Mulator
     {
 
         ILog log = LogManager.GetLogger(typeof(Mulator));
+
+        ILog consoleLog = LogManager.GetLogger("FROM客户端控制台");
+
         public int remotePort { get; set; }       // 模拟器中TCP端口
         public string localIPAddr { get; set; }   // 该模拟器对应的本地IP地址与端口
         public int localPort { get; set; }        // 模拟器的本地端口
@@ -49,34 +52,45 @@ namespace Common.Mulator
         {
             // 1. push jar 文件到安卓模拟器
             // adb push  "C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar" data/local/tmp
-            //  Constants.JAR_PATH = @"C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar";
+             Constants.JAR_PATH = @"C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar";
            // Constants.ADB_PATH = "adb";
+       //     string logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {1} push {2} {3}", Constants.ADB_PATH, localIPAddr, Constants.JAR_PATH, Constants.TEMP_PATH));
 
-            string logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {3} push {1} {2}", Constants.ADB_PATH, Constants.JAR_PATH, Constants.TEMP_PATH,localIPAddr));
+            string[] cmmlines= new string[3];
+            int index = 0;
+            string cmm0 = "CHCP 65001";
+           // cmmlines[index++] = cmm0;
 
+            string cmm1 = string.Format("{0} -s {1} push {2} {3}", Constants.ADB_PATH, localIPAddr, Constants.JAR_PATH, Constants.TEMP_PATH);
+
+            cmmlines[index++] = cmm1;
             /*** 此时服务器已经启动 ****/
 
             // 2. 转发端口
             // adb -s <模拟器> forward tcp:localPort tcp:remotePort
-            logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {1} forward tcp:{2} tcp:{3}", Constants.ADB_PATH, localIPAddr, localPort, remotePort));
+            //logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {1} forward tcp:{2} tcp:{3}", Constants.ADB_PATH, localIPAddr, localPort, remotePort));
 
+            string cmm2 = string.Format("{0} -s {1} forward tcp:{2} tcp:{3}", Constants.ADB_PATH, localIPAddr, localPort, remotePort);
+            cmmlines[index++] = cmm2;
 
             // 3. 启动 jar 文件
             // adb shell uiautomator runtest RegisterTest.jar -c com.test.TestRegister
             IsServerSetuped = false;
-            mulatorProcess = ProcessUtility.Exec(Constants.CMD_PATH, string.Format("{0} shell uiautomator runtest {1} -c com.test.TestRegister", 
-                Constants.ADB_PATH,Constants.JAR_FILE),ProcessNormalOutputReceived,ProcessErrorOutputReceived, ProcessExitHanlder);
+
+            string cmm3 = string.Format("{0} -s {1} shell uiautomator runtest {2} -c com.test.TestRegister", Constants.ADB_PATH, localIPAddr, Constants.JAR_FILE);
+            cmmlines[index++] = cmm3;
+
+            mulatorProcess = ProcessUtility.Exec(Constants.CMD_PATH, cmmlines ,ProcessNormalOutputReceived,ProcessErrorOutputReceived, ProcessExitHanlder);
            
             // 4. 等待服务器启动成功！！
             while(true)
             {
-                if (IsServerSetuped)
-                {
+                if (IsServerSetuped)                {
                     break;
                 }
 
                 log.Info("等待安卓模拟器服务端启动....");
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
 
             // 5.开始连接服务器
@@ -115,7 +129,9 @@ namespace Common.Mulator
                 IsServerSetuped = true;
             }
 
-            log.Info(e.Data.ToString());
+            byte[] gbk = Encoding.GetEncoding("GBK").GetBytes(msg);
+            msg = Encoding.UTF8.GetString(gbk);
+            consoleLog.Info(msg);
         }
 
         /// <summary>
@@ -125,7 +141,8 @@ namespace Common.Mulator
         /// <param name="e"></param>
         private void ProcessErrorOutputReceived(object sender, DataReceivedEventArgs e)
         {
-            log.Error(e.Data.ToString());
+
+            consoleLog.Error(e.Data.ToString());
         }
 
         /// <summary>
