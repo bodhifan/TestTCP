@@ -55,7 +55,7 @@ namespace Common.Mulator
         {
             // 1. push jar 文件到安卓模拟器
             // adb push  "C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar" data/local/tmp
-             Constants.JAR_PATH = @"C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar";
+           //  Constants.JAR_PATH = @"C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar";
            // Constants.ADB_PATH = "adb";
        //     string logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {1} push {2} {3}", Constants.ADB_PATH, localIPAddr, Constants.JAR_PATH, Constants.TEMP_PATH));
 
