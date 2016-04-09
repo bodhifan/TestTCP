@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using log4net;
 
@@ -12,6 +9,9 @@ namespace Common.Utility
     public class ProcessUtility
     {
         static ILog log = LogManager.GetLogger(typeof(ProcessUtility));
+
+
+        public static Dictionary<string, Process> nameProcessMap = new Dictionary<string, Process>();
         /// <summary>
         /// 
         /// </summary>
@@ -83,9 +83,9 @@ namespace Common.Utility
         /// <param name="exePath"></param>
         /// <param name="cmdLines"></param>
         /// <returns></returns>
-        public static void ExecAync(string exePath, string cmdLines)
+        public static void ExecAync(string exePath, string cmdLines,string name)
         {
-            Thread thread = new Thread(new AyncSetupProcess(exePath, cmdLines).Setup);
+            Thread thread = new Thread(new AyncSetupProcess(exePath, cmdLines,name).Setup);
             thread.Start();
         }
 
@@ -95,12 +95,14 @@ namespace Common.Utility
         /// <param name="exePath"></param>
         /// <param name="cmdLines"></param>
         /// <returns></returns>
-        public static void Exec(string exePath, string cmdLines)
+        public static void Exec(string exePath, string cmdLines,string name="default")
         {
             Process process = new System.Diagnostics.Process();
             process.StartInfo.FileName = exePath;
             process.StartInfo.Arguments = cmdLines;
             process.Start();
+
+            nameProcessMap.Add(name, process);
         }
 
         /// <summary>
@@ -150,14 +152,16 @@ namespace Common.Utility
     {
         private string exePath;
         private string cmdLines;
-        public AyncSetupProcess(string exePath, string cmdLines)
+        private string name;
+        public AyncSetupProcess(string exePath, string cmdLines,string name)
         {
             this.exePath = exePath;
             this.cmdLines = cmdLines;
+            this.name = name;
         }
         public void Setup()
         {
-            ProcessUtility.Exec(exePath, cmdLines);
+            ProcessUtility.Exec(exePath, cmdLines,name);
         }
     } 
 }

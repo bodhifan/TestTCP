@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using log4net;
 using System.Diagnostics;
 using System.Threading;
+using Win32Api;
+using System.Windows.Forms;
+using MouseKeyboardLibrary;
 
 namespace Common.Mulator
 {
@@ -52,7 +55,7 @@ namespace Common.Mulator
         {
             // 1. push jar 文件到安卓模拟器
             // adb push  "C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar" data/local/tmp
-           //  Constants.JAR_PATH = @"C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar";
+             Constants.JAR_PATH = @"C:\Users\bod\eclipse\java-mars\eclipse\RegisterAutomator\bin\RegisterTest.jar";
            // Constants.ADB_PATH = "adb";
        //     string logMsg = ProcessUtility.ExecAndWait(Constants.CMD_PATH, string.Format("{0} -s {1} push {2} {3}", Constants.ADB_PATH, localIPAddr, Constants.JAR_PATH, Constants.TEMP_PATH));
 
@@ -102,6 +105,32 @@ namespace Common.Mulator
             dispathCenter.DispatchMsg();
         }
 
+        /// <summary>
+        /// 获取模拟器窗口句柄
+        /// </summary>
+        /// <returns></returns>
+        public static IntPtr GetMonitorWindowHandler()
+        {
+           return Win32API.FindWindow(null, "逍遥安卓 2.5.0 - MEmu");
+        }
+
+        public static void SendKey(int key)
+        {
+            IntPtr handler = GetMonitorWindowHandler();
+            Win32API.SetActiveWindow(handler);
+            Win32API.SetForegroundWindow(handler);
+            KeyboardSimulator.KeyPress(Keys.A);
+          //  SendKeys.Send("{A}");
+        }
+
+        public static void SendKey(IntPtr handler, Keys key)
+        {
+            Win32API.SetActiveWindow(handler);
+            Win32API.SetForegroundWindow(handler);
+            KeyboardUtility.Instance().SendKey("a");
+           // Win32API.poose
+            //  SendKeys.Send("{A}");
+        }
         /// <summary>
         /// 关闭模拟器实例
         /// </summary>

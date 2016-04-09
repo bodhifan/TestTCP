@@ -24,13 +24,18 @@ namespace Common.Mulator
         /// <summary>
         /// 启动一个模拟器，并一直等待其启动完成
         /// </summary>
-        public Mulator Setup(string mulatroName)
+        public Mulator Setup(string mulatroName,bool restart)
         {
-            // 1.启动一个模拟器
-            SetupMulatorInstance(mulatroName);
+            if (restart)
+            {
+                // 1.启动一个模拟器
+                 SetupMulatorInstance(mulatroName);
+                // 2.等待其启动完全，硬等待其一分钟
+                 Thread.Sleep(1000 * 60);
 
-            // 2.等待其启动完全，硬等待其一分钟
-            Thread.Sleep(1000 * 60);
+
+            }
+
 
             // 3.连接该模拟器
             AdbUtility.GetAllDevices();
@@ -51,7 +56,7 @@ namespace Common.Mulator
         private bool SetupMulatorInstance(string mulatorName)
         {
             string consolePath = string.Format("{0} {1}", Constants.MULATOR_CONSOLE_PATH, mulatorName);
-            ProcessUtility.ExecAync(Constants.MULATOR_CONSOLE_PATH, " "+mulatorName);
+            ProcessUtility.ExecAync(Constants.MULATOR_CONSOLE_PATH, " "+mulatorName,mulatorName);
 
             return true;
 

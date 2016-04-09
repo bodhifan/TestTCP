@@ -9,7 +9,7 @@ namespace Common.Utility
     public abstract class Constants
     {
         // 逍遥模拟器安装目录
-       public static string DIR_PATH = @"D:\Program Files\Microvirt\MEmu";
+       public static string DIR_PATH = @"C:\Program Files\Microvirt\MEmu";
 
         // 逍遥模拟器控制台路径
        public static string MULATOR_CONSOLE_PATH = string.Format("\"{0}\\MEmuConsole.exe\"",DIR_PATH);

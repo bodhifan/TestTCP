@@ -40,9 +40,13 @@
     <Reference Include="log4net">
       <HintPath>library\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="MouseKeyboardLibrary">
+      <HintPath>library\MouseKeyboardLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,10 +70,13 @@
     <Compile Include="mulator\MulatorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="utility\AdbUtility.cs" />
+    <Compile Include="utility\CDD.cs" />
     <Compile Include="utility\Constants.cs" />
     <Compile Include="utility\EMulator.cs" />
+    <Compile Include="utility\KeyboardUtility.cs" />
     <Compile Include="utility\ProcessUtility.cs" />
     <Compile Include="utility\Support.cs" />
+    <Compile Include="utility\WindowUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -85,6 +92,12 @@
     <Content Include="RegisterTest.jar">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Win32Api\Win32Api.csproj">
+      <Project>{bed0b76e-fbf6-42f3-a71a-99858d06629f}</Project>
+      <Name>Win32Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
