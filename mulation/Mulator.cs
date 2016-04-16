@@ -12,8 +12,10 @@ using System.Threading;
 using Win32Api;
 using System.Windows.Forms;
 using MouseKeyboardLibrary;
+using Common.Log;
+using System.Drawing;
 
-namespace Common.Mulator
+namespace Common.Mulation
 {
     /// <summary>
     /// 表示一个安卓模拟器
@@ -111,26 +113,123 @@ namespace Common.Mulator
         /// <returns></returns>
         public static IntPtr GetMonitorWindowHandler()
         {
-           return Win32API.FindWindow(null, "逍遥安卓 2.5.0 - MEmu");
+           IntPtr handler = Win32API.FindWindow(null, "逍遥安卓 2.5.0 - MEmu");
+           int times = 4;
+            while(handler == null && times-- > 0)
+            {
+                LogHelper.Warn("获取模拟器句柄失败,重新获取...");
+                handler = Win32API.FindWindow(null, "逍遥安卓 2.5.0 - MEmu");
+            }
+
+            return handler;
+        }
+        public static void SendCmm(string key,int delay = 2000)
+        {
+            bool flag = ImageValidation.IsHotKeyStarting();
+            if (!flag)
+            {
+                LogHelper.Debug("开启热键...");
+                SetupHotKey();
+            }
+            SendDDKey(key);
+
+            Thread.Sleep(delay);
         }
 
-        public static void SendKey(int key)
+        public static void ActiveHotkey()
         {
-            IntPtr handler = GetMonitorWindowHandler();
-            Win32API.SetActiveWindow(handler);
-            Win32API.SetForegroundWindow(handler);
-            KeyboardSimulator.KeyPress(Keys.A);
-          //  SendKeys.Send("{A}");
+            ActiveMulator();
+            RECT rect = ImageValidation.GetRaidoRect();
+            int offsetX = ConfigFileManager.Instance().GetConfigFile().ReadInteger("HOTKEY验证码", "OFFSET_L", 640);
+            int offsetY = ConfigFileManager.Instance().GetConfigFile().ReadInteger("HOTKEY验证码", "OFFSET_T", 85);
+
+            offsetX += 8;
+            offsetY += 8;
+            KeyboardUtility.Instance().MouseMove(rect.Left + offsetX, rect.Top + offsetY);
+            Thread.Sleep(500);
+            KeyboardUtility.Instance().SendButton(Utility.MouseButton.Left);
+            Thread.Sleep(1000);
+            KeyboardUtility.Instance().SendButton(Utility.MouseButton.Left);
+
+            KeyboardUtility.Instance().MouseMove(rect.Left+200, rect.Top+700);
+            Thread.Sleep(500);
+            KeyboardUtility.Instance().SendButton(Utility.MouseButton.Left);
+            
         }
 
-        public static void SendKey(IntPtr handler, Keys key)
+        /// <summary>
+        /// 激活模拟器窗口使其至于最前端
+        /// </summary>
+        /// <returns></returns>
+        public static IntPtr ActiveMulator()
         {
+            IntPtr handler = Mulator.GetMonitorWindowHandler();
+            Win32API.ShowWindow(handler, Win32API.SW_RESTORE);
             Win32API.SetActiveWindow(handler);
             Win32API.SetForegroundWindow(handler);
-            KeyboardUtility.Instance().SendKey("a");
-           // Win32API.poose
-            //  SendKeys.Send("{A}");
+            return handler;
         }
+
+        public static void ClearBrowser()
+        {
+            LogHelper.Debug("==========================清理浏览器 开始========================");
+            AdbUtility.ClearBrowser();
+            LogHelper.Debug("==========================清理浏览器 结束========================");
+        }
+        public static void SetupHotKey()
+        {
+            ActiveMulator();
+            // 按下ALT键
+            KeyboardUtility.Instance().SendKey(602, 1);
+            // 按下A键
+            KeyboardUtility.Instance().SendKey(401, 1);
+            // 松开A键
+            KeyboardUtility.Instance().SendKey(401, 2);
+            // 松开ALT键
+            KeyboardUtility.Instance().SendKey(602, 2);
+        }
+
+        public static void SendDDKey(string key, bool focused = false, int maxSpeedMills = 200)
+        {
+            IntPtr handler = ActiveMulator();
+            KeyboardUtility.Instance().SendKey(key, maxSpeedMills);
+            LogHelper.Info("输入：" + key);
+            if (focused)
+            {
+                LostFocus();
+            }
+            Thread.Sleep(500);
+        }
+
+        public static void SendKey(string key,bool focused=false,int maxSpeedMills = 200)
+        {
+            bool flag = ImageValidation.IsHotKeyStarting();
+            if (flag)
+            {
+                LogHelper.Debug("关闭热键...");
+                SetupHotKey();
+            }
+            SendDDKey(key, focused, maxSpeedMills);
+        }
+
+        public static void LostFocus()
+        {
+            LogHelper.Debug("lost focus");
+            RECT rect = ImageValidation.GetRaidoRect();
+            LogHelper.Info(string.Format("LEFT:{0} TOP:{1} RIGHT:{2} BUTTOM:{3}", rect.Left, rect.Top, rect.Right, rect.Bottom));
+            int x = rect.Left + 150;
+            int y = rect.Top + 600;
+            KeyboardUtility.Instance().MouseMove(x, y);
+            Thread.Sleep(500);
+            KeyboardUtility.Instance().SendButton(Common.Utility.MouseButton.Left);
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// 关闭模拟器实例
         /// </summary>

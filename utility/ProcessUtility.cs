@@ -59,7 +59,7 @@ namespace Common.Utility
             Process process = new System.Diagnostics.Process();
             process.StartInfo.FileName = exePath;
             process.StartInfo.UseShellExecute = false;
-        //    process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.CreateNoWindow = true;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.RedirectStandardError = true;
@@ -102,7 +102,7 @@ namespace Common.Utility
             process.StartInfo.Arguments = cmdLines;
             process.Start();
 
-            nameProcessMap.Add(name, process);
+            nameProcessMap[name] = process;
         }
 
         /// <summary>

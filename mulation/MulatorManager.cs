@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using log4net;
 using Common.Utility;
 using System.Threading;
+using System.Diagnostics;
 
-namespace Common.Mulator
+namespace Common.Mulation
 {
     /// <summary>
     /// 模拟器管理器
@@ -31,12 +32,11 @@ namespace Common.Mulator
                 // 1.启动一个模拟器
                  SetupMulatorInstance(mulatroName);
                 // 2.等待其启动完全，硬等待其一分钟
-                 Thread.Sleep(1000 * 60);
+
+                 Thread.Sleep(Constants.WATTING_TIME);
 
 
             }
-
-
             // 3.连接该模拟器
             AdbUtility.GetAllDevices();
 
@@ -68,6 +68,8 @@ namespace Common.Mulator
         /// <param name="mulator"></param>
         public void Stop(Mulator mulator)
         {
+            ProcessUtility.KillProcess("MEmu.exe");
+            log.Info("结束进程：MEmu.exe");
 
         }
 

@@ -53,6 +53,7 @@ Temporary Items
 /TestClient/obj/
 /TestServer/bin/
 /TestServer/obj/
+/Win32Api
 .vs/
 /MyTest
 

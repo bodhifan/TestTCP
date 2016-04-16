@@ -10,7 +10,7 @@ using log4net;
 using Common.Log;
 using Common.Core;
 using Common.Management;
-using Common.Mulator;
+using Common.Mulation;
 using Common.Utility;
 using System.Windows.Forms;
 using System.Diagnostics;
@@ -35,10 +35,12 @@ namespace TestServer
             /**
              * 启动一次完整的模拟器测试
              */
-            MulatorManager manager = new MulatorManager();
-            mulator = manager.Setup("MEmu", true);
-            mulator.OnMsgReceived += Mulator_OnMsgReceived;
-            mulator.StartServer();
+            //MulatorManager manager = new MulatorManager();
+            //mulator = manager.Setup("MEmu", true);
+            //mulator.OnMsgReceived += Mulator_OnMsgReceived;
+            //mulator.StartServer();
+            Console.ReadLine();
+            Mulator.SendKey("]");
 
             Console.ReadLine();
         }
